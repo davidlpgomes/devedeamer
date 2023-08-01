@@ -1,0 +1,156 @@
+% Devedeamer
+% A simplified beamer template
+% Author: David Gomes
+% GitHub: davidlpgomes/devedeamer
+
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{tikz}
+\usepackage{authoraftertitle}
+\usepackage{listings}
+\usepackage{moreverb}
+\usepackage[style=english]{csquotes}
+\usepackage{moresize}
+
+% Compile with XeLaTeX
+\usepackage{fontspec}
+\usepackage{lexend}
+\usepackage[usefilenames]{plex-otf}
+
+% Fonts
+\setsansfont{LexendDeca}
+%
+
+% Colors
+\definecolor{dvdBlack}{HTML}{242423}
+\definecolor{dvdGray}{HTML}{cfdbd5}
+\definecolor{dvdWhite}{HTML}{e8eddf}
+\definecolor{dvdPrimary}{HTML}{b79ced}
+\definecolor{dvdSecondary}{HTML}{333533}
+
+\definecolor{colorBackground}{HTML}{242423}
+\definecolor{colorText}{HTML}{e8eddf}
+%
+
+% ----- Beamer configuration
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{sections/subsections in toc}[sections numbered]
+% Remove navigation bar (ugly)
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{bibliography item}[triangle]
+
+% Beamer colors
+\setbeamercolor{background canvas}{bg=colorBackground, fg=colorText}
+\setbeamercolor{frametitle}{bg=dvdPrimary, fg=colorBackground}
+\setbeamercolor{normal text}{fg=colorText}
+\setbeamercolor{local structure}{fg=dvdPrimary}
+\setbeamercolor{section number projected}{fg=dvdPrimary}
+\setbeamercolor{section in toc}{fg=colorText}
+\setbeamercolor{caption name}{fg=dvdPrimary}
+\setbeamercolor{caption}{fg=colorText}
+\setbeamercolor{block title}{fg=dvdPrimary}
+\setbeamercolor{bibliography entry author}{fg=dvdPrimary}
+\setbeamercolor{bibliography entry location}{fg=dvdGray}
+\setbeamercolor{footline}{fg=dvdGray}
+
+% Fonts
+\setbeamerfont{title}{size=\huge}
+\setbeamerfont{subtitle}{size=\large}
+\setbeamerfont{author}{size=\large}
+
+% --- Templates
+\makeatletter
+
+% Title page
+\setbeamertemplate{title page}{
+    \begin{minipage}{\linewidth}
+    \begin{flushleft}
+        \usebeamerfont{title} \color{dvdPrimary} \inserttitle \\
+        \large
+        \ifx \insertsubtitle\@empty
+            \vspace{1em}
+        \else
+            \vspace{0.5em}
+            \usebeamerfont{subtitle} \insertsubtitle \\
+            \vspace{1.5em}
+        \fi
+        \usebeamerfont{author} \color{dvdWhite} \insertauthor
+    \end{flushleft}
+    \begin{tikzpicture}[remember picture, overlay]
+        \fill[dvdPrimary] (current page.south east) rectangle ([xshift=-5cm]current page.north east);
+    \end{tikzpicture}
+    \end{minipage}
+}
+% ---
+
+\makeatother
+
+\AtBeginSection[] {
+    \begin{frame}[plain, noframenumbering]
+    \begin{minipage}{\linewidth}
+    \begin{tikzpicture}[remember picture, overlay]
+        \fill[dvdPrimary] (current page.south east) rectangle ([xshift=-8cm]current page.north east);
+    \end{tikzpicture}
+    \begin{flushright}
+        \usebeamerfont{title} \color{colorBackground}
+        \insertsectionnumber. \insertsection
+    \end{flushright}
+    \end{minipage}
+    \end{frame}
+}
+% -----
+
+% ----- Quoting
+\def\signed #1{{
+    \leavevmode \unskip \nobreak \hfil \penalty 50 \hskip 1em
+    \hbox{} \nobreak \hfill — #1
+    \parfillskip=0pt \finalhyphendemerits=0 \endgraf
+}}
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+  {\savebox\mybox{#1}\begin{quote}\openautoquote\hspace*{-.7ex}}
+  {\unskip\closeautoquote\vspace*{1mm}\signed{\usebox\mybox}\end{quote}}
+% -----
+
+% ----- Listings configuration
+% Python environment
+\newcommand{\pythonstyle}{
+\lstset{
+    language=Python,
+    basicstyle=\PlexMediumTT,
+    morekeywords={self},
+    keywordstyle=\color{dvdPrimary},
+    commentstyle=\color{dvdGray},
+    showstringspaces=false,
+    frame=tb,
+    numbers=left
+}}
+\lstnewenvironment{python}[1][]{
+    \pythonstyle
+    \lstset{language=Python, #1}
+}{}
+% -
+
+% C/C++ environment
+\newcommand{\cplusplusstyle}{
+\lstset{
+    language=C++,
+    basicstyle=\PlexMediumTT,
+    keywordstyle=\color{dvdPrimary},
+    commentstyle=\color{dvdGray},
+    showstringspaces=false,
+    frame=tb,
+    numbers=left
+}}
+\lstnewenvironment{cplusplus}[1][]{
+    \cplusplusstyle
+    \lstset{language=C++, #1}
+}{}
+% -
+
+\cplusplusstyle
+\pythonstyle
+% -----
